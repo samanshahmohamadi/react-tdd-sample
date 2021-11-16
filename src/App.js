@@ -1,8 +1,9 @@
+import RestaurantScreen from "./components/RestaurantScreen";
 
 function App() {
   return (
     <div>
-      Hello World.
+      <RestaurantScreen/>
     </div>
   );
 }
