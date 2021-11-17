@@ -9,23 +9,34 @@ describe('RestaurantList', () => {
   let loadRestaurants;
   let context;
 
-  beforeEach(() => {
-    loadRestaurants = jest.fn().mockName('loadRestaurants');
+  const renderWithProps = (propOverrides = {}) => {
+    const props = {
+      loadRestaurants: jest.fn().mockName('loadRestaurants'),
+      restaurants,
+      ...propOverrides,
+    };
+    loadRestaurants = props.loadRestaurants;
 
-    context = render(
-      <RestaurantList
-        loadRestaurants={loadRestaurants}
-        restaurants={restaurants}
-      />,
-    );
-  })
+    context = render(<RestaurantList {...props} />);
+  };
+
+  beforeEach(() => {
+    renderWithProps();
+  });
+
+  it('displays the loading indicator while loading', () => {
+    renderWithProps({loading: true});
+    const {queryByTestId} = context;
+    expect(queryByTestId('loading-indicator')).not.toBeNull();
+  });
 
   it('loads restaurants on first render', () => {
+    renderWithProps();
     expect(loadRestaurants).toHaveBeenCalled();
   });
 
   it('displays the restaurants', () => {
-
+    renderWithProps();
     const {queryByText} = context;
 
     expect(queryByText('Sushi Place')).not.toBeNull();
