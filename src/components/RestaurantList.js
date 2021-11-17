@@ -6,14 +6,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {loadRestaurants} from '../store/restaurants/actions';
 
-export const RestaurantList = ({loadRestaurants, restaurants}) => {
+export const RestaurantList = ({loadRestaurants, restaurants, loading}) => {
   useEffect(() => {
     loadRestaurants();
   }, [loadRestaurants]);
 
   return (
     <>
-      <CircularProgress data-testid="loading-indicator" />
+      {loading && <CircularProgress data-testid="loading-indicator" />}
       <List>
         {restaurants.map(restaurant => (
           <ListItem key={restaurant.id}>
@@ -27,6 +27,7 @@ export const RestaurantList = ({loadRestaurants, restaurants}) => {
 
 const mapStateToProps = state => ({
   restaurants: state.restaurants.records,
+  loading: state.restaurants.loading,
 });
 
 const mapDispatchToProps = {loadRestaurants};
